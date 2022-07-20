@@ -62,7 +62,7 @@ async def pr(ctx):
 
 async def send_embed(ctx, stock_info):
     data = list(zip(stock_info["n"], stock_info["u"], stock_info["p"]))
-    formatter = MySource(data, per_page=12)
+    formatter = MySource(data, per_page=10)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 

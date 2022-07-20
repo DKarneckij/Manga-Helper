@@ -1,9 +1,10 @@
 import gspread, asyncio, re, json, aiohttp
 from bs4 import BeautifulSoup
 
-sa = gspread.service_account(filename="google-credentials.json")
+sa = gspread.service_account(filename="credentials.json")
 sh = sa.open("HPB")
 wks = sh.worksheet("Manga")
+
 
 async def find_stock():
     print('-----Beginning Search-----')
