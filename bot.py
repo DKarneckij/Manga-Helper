@@ -66,17 +66,4 @@ async def send_embed(ctx, stock_info):
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 
-# @client.command()
-# async def lp(ctx, enabled = "start", interval = 2):
-#    if ctx.channel.id == bot_channel:
-#        if enabled.lower() == "start":
-#            run_intervals.change_interval(seconds=interval)
-#            run_intervals.start(ctx)
-#       if enabled.lower() == "stop":
-#            run_intervals.stop()
-
-# @tasks.loop()
-# async def run_intervals(ctx):
-#    await sr(ctx)
-
 bot.run(TOKEN)
