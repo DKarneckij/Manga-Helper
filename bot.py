@@ -50,6 +50,7 @@ class MySource(menus.ListPageSource):
 # Completes a search for all urls
 @bot.command()
 async def sr(ctx):
+    ctx.send("----Beginning Search----")
     stock_info = await find_stock()
     await send_embed(ctx, stock_info)
 
