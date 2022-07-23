@@ -1,7 +1,7 @@
 import gspread, asyncio, re, json, aiohttp
 from bs4 import BeautifulSoup
 
-sa = gspread.service_account(filename="credentials.json")
+sa = gspread.service_account(filename="google-credentials.json")
 sh = sa.open("HPB")
 wks = sh.worksheet("Manga")
 
