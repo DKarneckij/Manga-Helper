@@ -3,8 +3,8 @@ from discord.ext import commands, tasks, menus
 from discord.ext.menus import button, First, Last
 from data import *
 
-with open('token.json', 'r') as f:
-  TOKEN = json.load(f)['token']
+# with open('token.json', 'r') as f:
+#  TOKEN = json.load(f)['token']
 bot = commands.Bot(command_prefix='$')
 
 @bot.event

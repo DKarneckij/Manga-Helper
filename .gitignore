@@ -1,5 +1,5 @@
 token.json
-credentials.json
+google-credentials.json
 stock_info.json
 .DS_Store
 __pycache__
