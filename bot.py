@@ -1,10 +1,14 @@
-import discord, asyncio, json
+import discord, asyncio, json, os, os.path
 from discord.ext import commands, tasks, menus
 from discord.ext.menus import button, First, Last
 from data import *
 
-# with open('token.json', 'r') as f:
-#  TOKEN = json.load(f)['token']
+if not os.path.isfile("token.json"):
+    TOKEN = os.environ.get('IS_HEROKU', None)
+else:
+    with open('token.json', 'r') as f:
+        TOKEN = json.load(f)['token']
+
 bot = commands.Bot(command_prefix='$')
 
 @bot.event
@@ -55,7 +59,7 @@ async def sr(ctx):
     await send_embed(ctx, stock_info)
 
 # Sends the results of the last search
-@bot.command()
+@bot.command() 
 async def pr(ctx):
     with open("stock_info.json", "r") as f:
         stock_info = json.load(f)
