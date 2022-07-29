@@ -4,7 +4,7 @@ from discord.ext.menus import button, First, Last
 from data import *
 
 if not os.path.isfile("token.json"):
-    TOKEN = os.environ.get('IS_HEROKU', None)
+    TOKEN = os.environ.get('TOKEN')
 else:
     with open('token.json', 'r') as f:
         TOKEN = json.load(f)['token']
