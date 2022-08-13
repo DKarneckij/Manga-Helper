@@ -18,7 +18,7 @@ class Loop(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
-        self.scheduler.add_job(self.loop_sr, CronTrigger(minute=35), args=[self])
+        self.scheduler.add_job(self.loop_sr, CronTrigger(minute=15), args=[self])
         self.scheduler.start()
 
     async def loop_sr(*args):
@@ -27,7 +27,6 @@ class Loop(commands.Cog):
         channel = bot.get_channel(997024131067416606)
         message = await channel.fetch_message(1006408720349151292)
         ctx = await bot.get_context(message)
-        print(ctx)
 
         s = sheet()
         stock = await s.search()

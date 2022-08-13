@@ -36,7 +36,6 @@ class sheet():
         helper.add_abe(res)
         if os.path.isfile("stock_info.json"):
             helper.add_new(res)
-        print(res["new"])
         helper.store_stock(res)
 
         return res
