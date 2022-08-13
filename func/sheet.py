@@ -8,17 +8,15 @@ class sheet():
     sa = gspread.service_account(filename="google-credentials.json")
     sh = sa.open("HPB")
     wks = sh.worksheet("Manga")
-    names_col = 5
-    names = wks.col_values(names_col), 
-    urls = wks.col_values(names_col + 1)
     
     def __init__(self):
         self.broken_links = []
 
     async def search(self):
 
-        names, urls = sheet.names, sheet.urls
-        res = {"name": [], "url" : [], "price" : [], "abe" : [], "isbn" : []}
+        num_col = 5
+        names, urls = sheet.wks.col_values(num_col), sheet.wks.col_values(num_col+1)
+        res = {'name': [], 'url' : [], 'price' : [], 'abe' : [], 'isbn' : []}
 
         # Asynchronous aiohttp requests
         async with aiohttp.ClientSession() as session:
@@ -31,13 +29,14 @@ class sheet():
                 if not result:
                     continue
                 res["name"].append(name); res["url"].append(url) 
-                res["price"].append(result[0]); res["isbn"].append(result[1])
+                res["price"].append(result[0]); res['isbn'].append(result[1])
 
         helper.sort_by_price(res)
         print("----Starting AbeBooks Search----")
         helper.add_abe(res)
         if os.path.isfile("stock_info.json"):
             helper.add_new(res)
+        print(res["new"])
         helper.store_stock(res)
 
         return res
@@ -94,7 +93,7 @@ class helper():
             price = helper.get_abe(isbn)
             print(price)
 
-            if price == None:
+            if price == "HTTP 429":
                 break
 
             res['abe'].append(price)
@@ -104,11 +103,12 @@ class helper():
     def get_abe(isbn):
 
         if isbn == 'None':
-            return ''
+            return 'No ISBN'
+
         abe = AbeBooks().getPriceByISBN(isbn)
 
         if abe == None:
-            return None
+            return "HTTP 429"
 
         if abe['success']:
             available = [abe['pricingInfoForBestNew'], abe['pricingInfoForBestUsed']]
@@ -123,6 +123,7 @@ class helper():
 
     def add_new(new_stock):
         new_stock["new"] = []
+
 
         with open("stock_info.json", "r") as f:
             old_stock = json.load(f)

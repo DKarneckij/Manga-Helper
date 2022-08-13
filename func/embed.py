@@ -57,8 +57,8 @@ class MySource_Mobile(menus.ListPageSource):
         return myEmbed
 
 class MySource_New(menus.ListPageSource):
-    async def format_page(self, entries):
-        new_items = ''
+    async def format_page(self, menu, entries):
+        new_items = 'Place Holder'
 
         for new in entries:
             new_items += f"{new}\n"
@@ -80,7 +80,7 @@ async def send_embed(ctx, stock):
 
 async def send_embed_mobile(ctx, stock):
     data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
-    formatter = MySource_Mobile(data, per_page=10)
+    formatter = MySource_Mobile(data, per_page=9)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 

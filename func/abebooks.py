@@ -12,10 +12,7 @@ class AbeBooks:
     def __get_price(self, payload):
         url = "https://www.abebooks.com/servlet/DWRestService/pricingservice"
         resp = requests.post(url, data=payload)
-        resp.raise_for_status()
-        try:
-            resp.raise_for_status()
-        except requests.HTTPError:
+        if resp.status_code == 429:
             return None
         return resp.json()
 
