@@ -9,23 +9,23 @@ class Search(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.Cog.listener()
-    async def on_ready(self):
-        pass
-
-
-    @commands.command()
-    async def ping(self, ctx):
-        await ctx.send("Pong")
-    
     @commands.command()
     async def sr(self, ctx):
-        await ctx.send("----Beginning Search----")
+
+        print("Test")
+
+        await ctx.message.delete()
+
         s = sheet()
-        stock = await s.search()
+        stock = await s.search(ctx)
         await send_embed(ctx, stock)
 
-        #If there are broken links within the worksheet
+        # Send embed if there's new item/s compared to last run
+        if "new" in stock:
+            if stock["new"]:
+                await send_embed_new(ctx, stock["new"])
+
+        # Sends a dm and adds broken links to the worksheet
         if s.broken_links:
             s.show_broken_links()
             await dm_broken_links(self.bot)

@@ -1,4 +1,6 @@
+import colorsys
 from re import A
+from turtle import color
 import discord
 from discord.ext import menus
 from discord.ext.menus import button, First, Last
@@ -58,14 +60,14 @@ class MySource_Mobile(menus.ListPageSource):
 
 class MySource_New(menus.ListPageSource):
     async def format_page(self, menu, entries):
-        new_items = 'Place Holder'
+        new_items = ''
 
         for new in entries:
             new_items += f"{new}\n"
 
         myEmbed=discord.Embed(
             title='New',
-            color= discord.Color.red())
+            color= discord.Color.green())
         myEmbed.add_field(name='Volume', 
             value=new_items, inline=True)
         return myEmbed
@@ -85,9 +87,29 @@ async def send_embed_mobile(ctx, stock):
     await menu.start(ctx)
 
 async def send_embed_new(ctx, new):
-    formatter = MySource_New(new, per_page = 10)
+    formatter = MySource_New(new, per_page = 9)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 
-async def send_broken_links(ctx, links):
-    await ctx.send(links)
+async def embed_search_start(ctx):
+    myEmbed=discord.Embed(
+            title='--- Searching HPB ---',
+            color= discord.Color.from_rgb(255, 234, 0))
+    await ctx.send(embed=myEmbed)
+
+async def embed_abesearch_start(ctx):
+    myEmbed=discord.Embed(
+                title='--- Searching AbeBooks ---',
+                color= discord.Color.from_rgb(255, 234, 0))
+    await ctx.send(embed=myEmbed)
+
+async def embed_deleted_list(ctx, delete_list):
+    list = ''
+    for item in delete_list:
+        list += f"{item.title()}\n"
+    myEmbed=discord.Embed(
+        title='Deleted',
+        color= discord.Color.red())
+    myEmbed.add_field(name='Volume' , 
+            value=list, inline=True)
+    await ctx.send(embed=myEmbed)
