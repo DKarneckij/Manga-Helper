@@ -140,7 +140,7 @@ class helper():
         else: return 'None'
     
     # Loop to add AbeBooks price for all in-stock items
-    # Fills prices with "HTTP 429" if found
+    # Fills prices with "Error" if an error comes up
     def add_abe(res):
         error = False
         for isbn in res["isbn"]:
