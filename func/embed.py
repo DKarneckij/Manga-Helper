@@ -1,6 +1,3 @@
-import colorsys
-from re import A
-from turtle import color
 import discord
 from discord.ext import menus
 from discord.ext.menus import button, First, Last
