@@ -18,7 +18,7 @@ $remove
 
 ## Example
 
-<img src="https://i.imgur.com/iy9otE1.png" alt="drawing" width="370"/>
+<img src="https://i.imgur.com/xE3dXU8.png" alt="drawing" width="370"/>
 
 ## Roadmap
 
