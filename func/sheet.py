@@ -63,8 +63,9 @@ class sheet():
 
             if soup_tag != 'None': 
                 regex = re.search('"text-price-large">\$(.+?) <span', soup_tag)
+                price = None
                 if len(regex.group(1)) > 6:
-                    prince = float(regex.group(1).replace(",", ""))
+                    price = float(regex.group(1).replace(",", ""))
                 else:
                     price = float(regex.group(1))
                 isbn = helper.get_isbn(soup)
