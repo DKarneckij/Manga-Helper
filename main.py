@@ -18,7 +18,6 @@ try:
 except Exception as e:
     print(f"Error creating bot: {e}")
 bot.schedule = Schedule(bot)
-print(type(bot))
 warnings.filterwarnings("ignore")
 
 @bot.event
@@ -26,6 +25,7 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 async def load():
+    await print(type(bot))
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             try:
