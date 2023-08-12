@@ -12,26 +12,29 @@ class Search(commands.Cog):
     @commands.command()
     async def sr(self, ctx):
 
-        print("Test")
-
         await ctx.message.delete()
+        await send_embed(ctx, "--- Searching HPB ---")
 
+        # Run the search
         s = sheet()
-        stock = await s.search(ctx)
-        await send_embed(ctx, stock)
+        stock = await s.search("All")
 
-        # Send embed if there's new item/s compared to last run
-        if "new" in stock:
-            if stock["new"]:
-                await send_embed_new(ctx, stock["new"])
+        await send_stock(ctx, stock)
 
-        # Sends a dm and adds broken links to the worksheet
+        # Send embed and message if there's new item/s compared to last run
+        if stock["new"]:
+            print("New in Stock")
+            await send_new_stock(ctx, stock["new"])
+
+        # Send message of all the expensive stuff
+        if stock["expensive"]:
+            print("Expensive in Stock")
+            await dm_expensive_urls(self.bot, stock["expensive"])
+
+        # Sends a dm if there's any broken links
         if s.broken_links:
-            s.show_broken_links()
             await dm_broken_links(self.bot)
-    
 
-def setup(bot):
-    bot.add_cog(Search(bot))
     
-
+async def setup(bot):
+    await bot.add_cog(Search(bot))

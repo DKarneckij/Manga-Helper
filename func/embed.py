@@ -71,34 +71,28 @@ class MySource_New(menus.ListPageSource):
 
 # Overwrite for what buttons are displayed and what emotes are used 
 # Added looping around for next and previous page
-async def send_embed(ctx, stock):
+async def send_stock(ctx, stock):
     data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
     formatter = MySource(data, per_page=10)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 
-async def send_embed_mobile(ctx, stock):
+async def send_stock_mobile(ctx, stock):
     data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
     formatter = MySource_Mobile(data, per_page=9)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 
-async def send_embed_new(ctx, new):
+async def send_new_stock(ctx, new):
     formatter = MySource_New(new, per_page = 9)
     menu = MyMenuPages(formatter)
     await menu.start(ctx)
 
-async def embed_search_start(ctx):
+async def send_embed(ctx, message):
     myEmbed=discord.Embed(
-            title='--- Searching HPB ---',
+            title=message,
             color= discord.Color.from_rgb(255, 234, 0))
-    await ctx.send(embed=myEmbed)
-
-async def embed_abesearch_start(ctx):
-    myEmbed=discord.Embed(
-                title='--- Searching AbeBooks ---',
-                color= discord.Color.from_rgb(255, 234, 0))
-    await ctx.send(embed=myEmbed)
+    return await ctx.send(embed=myEmbed)
 
 async def embed_deleted_list(ctx, delete_list):
     list = ''

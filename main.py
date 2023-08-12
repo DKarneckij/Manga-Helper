@@ -1,9 +1,11 @@
 from discord.ext import commands
-import os, json, warnings
+import os, json, warnings, asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from func.sheet import sheet
 from func.embed import *
 from func.message import *
+from func.Schedule import Schedule
 
 if not os.path.isfile("token.json"):
     TOKEN = os.environ.get('TOKEN')
@@ -11,41 +13,28 @@ else:
     with open('token.json', 'r') as f:
         TOKEN = json.load(f)['token']
         
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix='$', intents=discord.Intents.all())
+bot.schedule = Schedule(bot)
 warnings.filterwarnings("ignore")
 
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-if __name__ == '__main__':
+async def load():
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
-            bot.load_extension(f'cogs.{filename[:-3]}')
+            await bot.load_extension(f'cogs.{filename[:-3]}')
 
-async def loop_sr():
+async def main():
+    await load()
 
-    # Create ctx for the embed function to use
-    channel = bot.get_channel(997024131067416606)
-    message = await channel.fetch_message(1006408720349151292)
-    ctx = await bot.get_context(message)
+    scheduler = AsyncIOScheduler(timezone="America/New_York")
+    scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('0 7 * * *'))
+    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('0,20,40 19-21 * * * '), args=(["All"]))
+    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('5,10,15,25,30,35,45,50,55 19-21 * * * '), args=(["Expensive"]))
+    scheduler.start()
 
-    s = sheet()
-    stock = await s.search(ctx)
-    await send_embed(ctx, stock)
+    await bot.start(TOKEN)
 
-    # Send embed if there's new item/s compared to last run
-    if "new" in stock:
-        if stock["new"]:
-            await send_embed_new(ctx, stock["new"])
-
-    # Sends a dm and adds broken links to the worksheet if any found
-    if s.broken_links:
-        s.show_broken_links()
-        await dm_broken_links(bot)
-
-scheduler = AsyncIOScheduler(timezone="America/New_York")
-scheduler.add_job(loop_sr, 'cron', minute='0')
-scheduler.start()
-
-bot.run(TOKEN)
+asyncio.run(main())
