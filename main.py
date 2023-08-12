@@ -12,8 +12,11 @@ if not os.path.isfile("token.json"):
 else:
     with open('token.json', 'r') as f:
         TOKEN = json.load(f)['token']
-        
-bot = commands.Bot(command_prefix='$', intents=discord.Intents.all())
+
+try:
+    bot = commands.Bot(command_prefix='$', intents=discord.Intents.all())
+except Exception as e:
+    print(f"Error creating bot: {e}")
 bot.schedule = Schedule(bot)
 warnings.filterwarnings("ignore")
 
