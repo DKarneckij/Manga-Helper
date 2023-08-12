@@ -25,7 +25,6 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 async def load():
-    await print(type(bot))
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             try:
