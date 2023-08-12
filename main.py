@@ -37,7 +37,7 @@ async def main():
     await load()
 
     scheduler = AsyncIOScheduler(timezone="America/New_York")
-    # scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('0 7 * * *'))
+    scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('0 1 * * *'))
     scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('0,20,40 11-15 * * * '), args=(["All"]))
     scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('5,10,15,25,30,35,45,50,55 11-15 * * * '), args=(["Expensive"]))
     scheduler.start()

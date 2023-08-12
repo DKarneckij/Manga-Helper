@@ -37,6 +37,13 @@ class Schedule():
     
     async def update_abe(self):
 
-        s = sheet()
-        s.update_abe()
+        channel = self.bot.get_channel(self.channel_id)
+        message = await channel.fetch_message(self.message_id)
+        ctx = await self.bot.get_context(message)
+        
+        await send_embed(ctx, f"--- Updating Manga ---")
 
+        s = sheet()
+        await s.update_abe()
+
+        await send_embed(ctx, f"--- Done Updating Manga ---")
