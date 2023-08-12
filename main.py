@@ -23,8 +23,12 @@ async def on_ready():
 
 async def load():
     for filename in os.listdir('./cogs'):
+        print(filename)
         if filename.endswith('.py'):
-            await bot.load_extension(f'cogs.{filename[:-3]}')
+            try:
+                await bot.load_extension(f'cogs.{filename[:-3]}')
+            except Exception as e:
+                print(f"Error loading extension {filename}: {e}")
 
 async def main():
     await load()
