@@ -18,6 +18,7 @@ try:
 except Exception as e:
     print(f"Error creating bot: {e}")
 bot.schedule = Schedule(bot)
+print(type(bot))
 warnings.filterwarnings("ignore")
 
 @bot.event
