@@ -26,7 +26,6 @@ async def on_ready():
 
 async def load():
     for filename in os.listdir('./cogs'):
-        print(filename)
         if filename.endswith('.py'):
             try:
                 await bot.load_extension(f'cogs.{filename[:-3]}')
@@ -34,12 +33,13 @@ async def load():
                 print(f"Error loading extension {filename}: {e}")
 
 async def main():
+
     await load()
 
     scheduler = AsyncIOScheduler(timezone="America/New_York")
-    scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('0 7 * * *'))
-    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('0,20,40 19-21 * * * '), args=(["All"]))
-    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('5,10,15,25,30,35,45,50,55 19-21 * * * '), args=(["Expensive"]))
+    # scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('0 7 * * *'))
+    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('0,20,40 11-15 * * * '), args=(["All"]))
+    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('5,10,15,25,30,35,45,50,55 11-15 * * * '), args=(["Expensive"]))
     scheduler.start()
 
     await bot.start(TOKEN)
