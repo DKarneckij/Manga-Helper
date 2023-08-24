@@ -27,11 +27,6 @@ class Schedule():
             print("New in Stock")
             await send_new_stock(ctx, stock["new"])
 
-        # Send message of all the expensive stuff
-        if stock["expensive"]:
-            print("Expensive in Stock")
-            await dm_expensive_urls(ctx, stock["expensive"])
-
         if s.broken_links:
             await dm_broken_links(ctx)
     

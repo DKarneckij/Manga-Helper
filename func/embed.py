@@ -72,16 +72,13 @@ class MySource_New(menus.ListPageSource):
 # Overwrite for what buttons are displayed and what emotes are used 
 # Added looping around for next and previous page
 async def send_stock(ctx, stock):
-    data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
-    formatter = MySource(data, per_page=10)
-    menu = MyMenuPages(formatter)
-    await menu.start(ctx)
-
-async def send_stock_mobile(ctx, stock):
-    data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
-    formatter = MySource_Mobile(data, per_page=9)
-    menu = MyMenuPages(formatter)
-    await menu.start(ctx)
+    try:
+        data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
+        formatter = MySource(data, per_page=7)
+        menu = MyMenuPages(formatter)
+        await menu.start(ctx)
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
 
 async def send_new_stock(ctx, new):
     formatter = MySource_New(new, per_page = 9)

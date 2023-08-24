@@ -5,7 +5,7 @@ from func.abebooks import AbeBooks
 class sheet():
     
     sa = gspread.service_account(filename="google-credentials.json")
-    sh = sa.open("HPB")
+    sh = sa.open("Manga")
     wks = sh.worksheet("Manga")
     LIST_COL = 1
     NEW_COL = 6
@@ -15,6 +15,15 @@ class sheet():
     def __init__(self):
         self.broken_links = []
         self.removed_list = []
+
+    def get_names(self):
+        return self.wks.col_values(self.LIST_COL)[2:]
+    
+    def get_isbn13s(self):
+        return self.wks.col_values(self.LIST_COL + 2)[2:]
+
+    def get_abes(self):
+        return self.wks.col_values(self.LIST_COL + 3)[2:]
     
     def update_abe(self):
 
@@ -36,7 +45,7 @@ class sheet():
             abes.append([abe])
 
         if not error:
-            self.wks.update(f'D3:D{len(isbn) + 2}', abes, value_input_option='RAW')
+            self.wks.update(f'D3:D{len(isbns) + 2}', abes, value_input_option='RAW')
 
         names = self.wks.col_values(self.LIST_COL)[2:]
         urls = self.wks.col_values(self.LIST_COL+1)[2:]
@@ -157,6 +166,8 @@ class sheet():
                 in_stock["price"].append(search_result[0])
                 in_stock["abe"].append(abe) 
 
+        print(in_stock)
+
         # Sort In Stock Items by Price
         self._sort_by_price(in_stock)
 
@@ -173,12 +184,11 @@ class sheet():
             if list_choice == "Expensive":
                 in_stock = self._merge_stock(in_stock)
 
-
         self._store_stock(in_stock)
 
         return in_stock
 
-    def _merge_stock(in_stock):
+    def _merge_stock(self, in_stock):
 
         with open("stock_info.json", "r") as f:
             old_stock = json.load(f)
@@ -208,6 +218,7 @@ class sheet():
                 self.broken_links.append(url)
 
             soup_tag = str(soup.find("div", {"class": "text-price-large"}))
+            print(soup_tag)
 
             if soup_tag != 'None': 
                 regex = re.search('"text-price-large">\$(.+?) <span', soup_tag)
@@ -216,6 +227,7 @@ class sheet():
                     price = float(regex.group(1).replace(",", ""))
                 else:
                     price = float(regex.group(1))
+                print(price)
                 return [price]
 
     # Delete a list of items from the worksheet
