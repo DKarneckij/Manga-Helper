@@ -1,9 +1,10 @@
 from discord.ext import commands
 import os, json, warnings, asyncio
+print(os.listdir("func"))
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from func.schedule import Schedule
 from func.embed import *
+from func.schedule import Schedule
 from func.message import *
 
 if not os.path.isfile("token.json"):
