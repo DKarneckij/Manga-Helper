@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from func.Sheet import Sheet
 from website.HPB import HPB
-from func.Embed import *
+from func.embed import *
 from func.message import *
 
 class Search(commands.Cog):

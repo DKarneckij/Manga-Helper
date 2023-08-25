@@ -3,7 +3,7 @@ import os, json, warnings, asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from func.Schedule import Schedule
-from func.Embed import *
+from func.embed import *
 from func.message import *
 
 if not os.path.isfile("token.json"):

@@ -1,5 +1,5 @@
 import discord
-from func.Embed import *
+from func.embed import *
 from func.Sheet import Sheet
 from func.message import *
 from website.HPB import HPB

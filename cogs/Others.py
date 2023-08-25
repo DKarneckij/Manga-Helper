@@ -1,7 +1,7 @@
 from discord.ext import commands
 import json, os
 from func.Sheet import Sheet
-from func.Embed import *
+from func.embed import *
 from func.message import *
 
 
