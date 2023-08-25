@@ -20,6 +20,10 @@ class MyMenuPages(menus.MenuPages, inherit_buttons=False):
 
 # Overwrite for how pages are formated
 class MySource(menus.ListPageSource):
+    def __init__(self, entries, per_page, website):
+        super().__init__(entries=entries, per_page=per_page)
+        self.website = website
+
     async def format_page(self, menu, entries):
         names, prices, prices_abe = '', '', ''
 
@@ -30,7 +34,7 @@ class MySource(menus.ListPageSource):
             prices_abe += f"{price_abe}\n"
 
         myEmbed=discord.Embed(
-            title='$$$$$$',
+            title=self.website,
             color= discord.Color.blue())
         myEmbed.add_field(name='Volume', 
             value=names, inline=True)
@@ -72,13 +76,16 @@ class MySource_New(menus.ListPageSource):
 # Overwrite for what buttons are displayed and what emotes are used 
 # Added looping around for next and previous page
 async def send_stock(ctx, stock):
-    try:
-        data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
-        formatter = MySource(data, per_page=7)
-        menu = MyMenuPages(formatter)
-        await menu.start(ctx)
-    except Exception as e:
-        await ctx.send(f"An error occurred: {e}")
+    entries = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
+    formatter = MySource(entries, per_page=7, website=stock["website"])
+    menu = MyMenuPages(formatter)
+    await menu.start(ctx)
+
+async def send_stock_mobile(ctx, stock):
+    data = list(zip(stock["name"], stock["url"], stock["price"], stock["abe"]))
+    formatter = MySource_Mobile(data, per_page=9)
+    menu = MyMenuPages(formatter)
+    await menu.start(ctx)
 
 async def send_new_stock(ctx, new):
     formatter = MySource_New(new, per_page = 9)

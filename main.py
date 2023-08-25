@@ -2,8 +2,7 @@ from discord.ext import commands
 import os, json, warnings, asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from func.sheet import sheet
-from func.embed import *
+from func.Embed import *
 from func.message import *
 from func.Schedule import Schedule
 
@@ -36,11 +35,11 @@ async def main():
 
     await load()
 
-    # scheduler = AsyncIOScheduler(timezone="America/New_York")
+    scheduler = AsyncIOScheduler(timezone="America/New_York")
     # scheduler.add_job(bot.schedule.update_abe, trigger=CronTrigger.from_crontab('2 1 * * *'))
     # scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('* 10-15 * * * '), args=(["All"]))
-    # # scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('5,10,15,25,30,35,45,50,55 10-15 * * * '), args=(["Expensive"]))
-    # scheduler.start()
+    scheduler.add_job(bot.schedule.search, trigger=CronTrigger.from_crontab('*/5 * * * *'))
+    scheduler.start()
 
     await bot.start(TOKEN)
 

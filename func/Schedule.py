@@ -1,7 +1,8 @@
 import discord
-from func.embed import *
-from func.sheet import sheet
+from func.Embed import *
+from func.Sheet import Sheet
 from func.message import *
+from website.HPB import HPB
 
 class Schedule():
     def __init__(self, bot):
@@ -9,26 +10,29 @@ class Schedule():
         self.channel_id = 997024131067416606
         self.message_id = 1006408720349151292
 
-    async def search(self, list_choice):
+    async def search(self):
 
         channel = self.bot.get_channel(self.channel_id)
         message = await channel.fetch_message(self.message_id)
         ctx = await self.bot.get_context(message)
 
+        await send_embed(ctx, f"--- Searching For Manga ---")
 
-        await send_embed(ctx, f"--- Searching {list_choice} Manga ---")
+        s = Sheet()
 
-        s = sheet()
-        stock = await s.search(list_choice)
-        await send_stock(ctx, stock)
+        name_list = s.get_names()
+        isbn13_list = s.get_isbn13s()
+        abe_list = s.get_abes()
 
-        # Send embed and message if there's new item/s compared to last run
-        if stock["new"]:
-            print("New in Stock")
-            await send_new_stock(ctx, stock["new"])
+        website_stock = []
 
-        if s.broken_links:
-            await dm_broken_links(ctx)
+        # Search HalfPriceBooks
+        hpb = HPB(name_list, isbn13_list, abe_list)
+        website_stock.append(await hpb.search())
+
+        # Search WorldofBooks
+        for stock in website_stock:
+            await send_stock(ctx, stock)
     
     async def update_abe(self):
 
@@ -38,7 +42,7 @@ class Schedule():
         
         await send_embed(ctx, f"--- Updating Manga ---")
 
-        s = sheet()
+        s = Sheet()
         await s.update_abe()
 
         await send_embed(ctx, f"--- Done Updating Manga ---")
