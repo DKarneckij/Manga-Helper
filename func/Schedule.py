@@ -1,8 +1,8 @@
 import discord
 from func.embed import *
-from func.Sheet import Sheet
+from func.sheet import Sheet
 from func.message import *
-from website.HPB import HPB
+from website.hpb import HPB
 
 class Schedule():
     def __init__(self, bot):

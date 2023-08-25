@@ -2,7 +2,7 @@ from discord.ext import commands
 import os, json, warnings, asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from func.Schedule import Schedule
+from func.schedule import Schedule
 from func.embed import *
 from func.message import *
 

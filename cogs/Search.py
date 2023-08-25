@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from func.Sheet import Sheet
-from website.HPB import HPB
+from func.sheet import Sheet
+from website.hpb import HPB
 from func.embed import *
 from func.message import *
 

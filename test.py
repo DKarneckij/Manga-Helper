@@ -1,7 +1,7 @@
 import gspread, bs4, asyncio
 from func.AbeBooks import AbeBooks
-from func.Sheet import Sheet
-from website.WOB import WOB
+from func.sheet import Sheet
+from website.wob import WOB
 
 async def main():
     s = Sheet()
